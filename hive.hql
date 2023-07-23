@@ -20,6 +20,27 @@ SHOW DATABASES
 #Dropping database:
 DROP DATABASE [IF EXISTS] database_name [RESTRICT | CASCADE];
 
+#Create Table:
+CREATE [EXTERNAL] TABLE [IF NOT EXISTS] table_name
+(
+  column1 data_type [COMMENT 'column_comment'],
+  column2 data_type [COMMENT 'column_comment'],
+  ...
+)
+[COMMENT 'table_comment']
+[PARTITIONED BY (partition_column data_type [COMMENT 'column_comment'], ...)]
+[CLUSTERED BY (clustered_column_name) [SORTED BY (sort_order_column ASC|DESC)] INTO num_buckets BUCKETS]
+[ROW FORMAT DELIMITED
+  [FIELDS TERMINATED BY 'field_terminator']
+  [COLLECTION ITEMS TERMINATED BY 'collection_item_terminator']
+  [MAP KEYS TERMINATED BY 'map_key_terminator']
+  [LINES TERMINATED BY 'line_terminator']
+]
+[STORED AS file_format]
+[LOCATION 'hdfs_location']
+[TBLPROPERTIES ('key1'='value1', 'key2'='value2', ...)];
+
+
 
 
 
