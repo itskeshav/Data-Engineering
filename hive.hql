@@ -11,8 +11,7 @@ If you want to specify a different default location for the warehouse directory,
 property to the desired HDFS path in the hive-site.xml configuration file
 */
 
-#Describing database:
--You can use the DESCRIBE DATABASE command to view the location of the database and its properties.
+#Describing database:You can use the DESCRIBE DATABASE command to view the location of the database and its properties.
 DESCRIBE DATABASE EXTENDED database_name;
 
 #Database listing:
