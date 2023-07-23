@@ -53,6 +53,21 @@ Hive also vectorization but with only ORC format. We use vectorization when we n
 In vectorization we process data in mini batch
 
 
+Hive supports two types of tables:
+1. Managed / Internal tables
+  - Life cycle of data in the table is controlled by Hive.
+  - Data is stored under the sub directory defined by  'hive.metastore.warehouse.dir' 
+  - When table is dropped, data and metadata is deleted
+  - Not an ideal choice to share the table’s data with other tools
+
+2. External Tables​​​​​​​
+   - Use the keyword EXTERNAL with CREATE TABLE
+  - Life cycle of data in the table is NOT controlled by Hive
+  - Data is stored under the directory defined by LOCATION clause in the CREATE TABLE command 
+  - When table is dropped, data is not deleted but metadata is deleted
+  - Better choice for sharing data with other tools
+
+
 Conditional Function:-
 - NVL, COALESCE, ISNULL, ISNOTNULL, CASE, IF()
 
