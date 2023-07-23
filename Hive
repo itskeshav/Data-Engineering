@@ -1,0 +1,140 @@
+File Format :- 
+1. Parquet --> Columnar <SPARK> 
+2. ORC --> Columnar [Optimized Row-Columnar] <HIVE> 
+3. Avro --> Row-Columnar <For Frequent write/Update> 
+
+Above file format by default provide compression 
+
+Compression Order: - ORC > Parquet > Avro
+
+
+Serialized form --> Converting original data or object or data types into Bytes
+Deserialize --> Converting something to its original form or into original datatypes
+
+Advantage of serialization
+. Data in bytes
+. Fast Transmission over network
+. Less data sizes
+
+How to create backup of a table? 
+Create table new_table_name as (Select * from old_tabl_nanme)
+
+How to insert data into parquet file?
+From csv_table Insert OverwritePq_table Select *;
+
+Hive also vectorization but with only ORC format. We use vectorization when we need some kind of optimization in our hive query. 
+In vectorization we process data in mini batch
+
+
+Conditional Function:-
+- NVL, COALESCE, ISNULL, ISNOTNULL, CASE, IF()
+
+Explode & Lateral View function:-
+- Explode(column) takes in an array as input and outputs the elemnets of array as seperate rows.
+- We cannot select other columns of the table along with explode function. 
+- To overcome this issue we use laterview function
+- Here, we have exploded books_name and using lateral view stored it into virtual table name 'dummy'
+  under dummy_booksname column;
+- select author_name, dummy_booksname from table2 lateral view explode(books_name) dummy as dummy_booksname;
+- Leteral view is alo used to takeout key and value in a separate column from a map datatype
+- select key, value from table3 lateral view explode(col1) dummy as key, value;
+
+RLIKE:-
+- Same as like , only differenece is that u don't need to provide % symbol. 
+- select 'hadoop  ' rlike 'ha'  --> return true
+- in rlike, if any one of the value is null it return null 
+
+Rank, Dense_Rank, Row_Number:-
+- RANK() gives the ranking within ordered partition. 
+  Ties are assigned the same rank, with the next ranking(s) skipped
+- a, 1
+  a, 1
+  a, 1
+  b, 4
+  c, 5
+  c, 5
+
+- DENSE_RANK gives the ranking within ordered partition, but the ranks are consecutive. No rank are skipped
+  if there are ranks with multiple items.
+- a, 1
+  a, 1
+  a, 1
+  b, 2
+  c, 3
+  c, 3
+
+- ROW_NUMBER() assigns unique numbers to each row within the partition given the ORDER BY clause
+- a, 1
+  a, 2
+  a, 3
+  b, 4
+  c, 5
+  c, 6
+
+
+PARTITIONING:-
+- If we are not doing partitioning then it store all data inside single directory
+  /home/user/dept_table  ==> single directory with all accounts
+- if we apply parti.. then data will be stored in multiple directory.
+- No of directory depend upon the no of unique value of a column on which apply patrion..
+  /home/user/dept_table/dept_name=Accounts  ==> files with deptname only as Accounts
+  /home/user/dept_table/dept_name=HR        ==> files with deptname only as HR
+- In hive we can partion the data in two ways. Static & Dynamic partioning. 
+  But core idea is same taht they partion the data into various directory but how they do it is different.
+- While creating partioning table make sure u didn't include partion column in create statement.
+  It should present only in partion clause.
+- Because obviously we are loading the data of that column into its own name partion.
+
+
+Static Partioning:-
+- create table part_dept(deptno int, empname string, sal int) partitioned by (deptname string) row format....;
+- It is not mandatory to specifying the partition name  with the same as data since at last it a diretory name
+-  A> insert into part_dept partition(deptname='HR') select col1, col2, col3 from dept where col2='HR'
+   B> insert into part_dept partition(deptname='XZ') select col1, col2, col3 from dept where col2='HR'
+   Both A,B are correct since HR, XZ inside partition only specify directory name
+- In static, we explicitly provide name for directory
+- you can also load static partition using load command.But in taht case data should be seggregated priorly on 
+  partition column
+- so, if i have seperate file for each accounts(account, hr, sales,..) then i can load each file separately 
+  into its corresponding partition
+- load data local inpath '/home/keshva/act' into part_dept partition(deptname='XZ'); 
+- In static partioning there was manually loading of data
+
+Dynamic Partioning:-
+- If we want to craete partition based on partition column value. there we need dynamic partitioning.
+- By default dynamic partioning was disabled, so we need to first enable it
+  set hive.exec.dynamic.partition=true;
+- Bu defaut mode of partition is strict 
+  set.hive.exec.dynamic.partition.mode=nonstrict;
+- In strict mode we have to specify atleast one static partition along with other dynamic partition, In case if u 
+  are doing partitioning multiple columns like partitioned by (deptname, sal) just to avoide huge no of partition 
+  created by dynamic partitioning.
+- create table part_dept(deptno int, empname string, sal int) partitioned by (deptname string) row format....;
+- insert into part_dept partition(deptname) select col1, col3, col2 from dept 
+- Here we are not hardcoding the partition name just providing the column name.
+- Note: The column on which u are doing partition that sholud be kept at last in select clause inside insert.
+- We are doing partition of dept_name which is col2 in dept table that's why it is at last position
+- Static is faster tahn dynamic as we provide all things like partition_directory name and we all data into
+  specific directory using multiple insert or load command
+
+General Partition command:-
+- Show all partitioned directory associated with the table
+   - show partition partitioned_table_name;
+- alter table partition partitioned_table_name add/drop partition(partition_column=value)
+- load data into specified partition
+   - load data local inpath 'local_path' into partitioned_table_name partition(partition_column=value);
+   - insert into partitioned_table_name partition(partition_column) select col1, col2,... from main_table; 
+- What happen if we add one directory(similar name as partition directory) inside partitioned table explicitly
+  using hdfs command.if now we run show partition command , will it show newly craeted directorty. No it not show.
+  We need to first add that partition direc into that partitioned table using alter command. There is one more way 
+  to add that directory into partition list for that partitioned table using below commnad
+- MSCK repair table partitioned_table_name;
+
+
+JOINS:-
+- JOIN, LEFT/RIGHT [OUTER]JOIN, FULL OUTER JOIN
+- In joining condition u can only use equality operator. 
+
+ 
+
+
