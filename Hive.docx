@@ -16,6 +16,8 @@ Hive:-
 - Hive is not ACID compliance wheareas RDBMS is strictly ACID compliance.
 - Hive uses HQL and rdbms uses sql.
 
+
+
 What Hive is not ?
 - Hive is not a database. It just point to data lying in distributed stotrage(HDFS)
 - Hive is not a tool for OLTP. It is closer being as OLAP tool.
