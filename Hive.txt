@@ -1,3 +1,28 @@
+Hive:-
+- Hive is a hadoop component which allows you to write quries and these queries internally get converted to map-reduce and then 
+  they work on the data in HDFS. 
+- Hive queries are translated into map-reduce jobs
+- It work with structured dataset
+- Hive was created to reduce the complexity of map-reduce programming
+- In Hive the data is manged in HDFS, so hive is not the owner of the data
+  wheareas in RDBMS, the entire data is managed by Database Management system.
+- Hive queries are translated into Map Reduce jobs
+- Hive is schema on read  wheareas RDBMS is schema on write, so whenever you try to let say insert data into rdbms 
+  if contraints are not satisfy your RDBMS system  will not allow you to insert the data into the table.
+  But in case of Hive, we don't have that constaraint check. Data gets loaded into hive. Thats why we call it as schema on read.
+- Hive is meant to work with very large dataset wheare as rdbms meant to work with smaller dataset.
+- Hive is meant to be high latency type of system wherein the moment you execute a hive query, automatically map-reduce job get created.
+  wheareas rdbms is meant to be low latency type of system.
+- Hive is not ACID compliance wheareas RDBMS is strictly ACID compliance.
+- Hive uses HQL and rdbms uses sql.
+
+What Hive is not ?
+- Hive is not a database. It just point to data lying in distributed stotrage(HDFS)
+- Hive is not a tool for OLTP. It is closer being as OLAP tool.
+- Hive does not provide row level insert, update & delete.
+- Not used where fast respons time is required as in rdbms. rather used where high latency is acceptable with batch processing.
+- Does not support Unstructured data like ausio, video & picture.
+
 File Format :- 
 1. Parquet --> Columnar <SPARK> 
 2. ORC --> Columnar [Optimized Row-Columnar] <HIVE> 
