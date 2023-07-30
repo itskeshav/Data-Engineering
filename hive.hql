@@ -40,6 +40,7 @@ CREATE [EXTERNAL] TABLE [IF NOT EXISTS] table_name
 [LOCATION 'hdfs_location']
 [TBLPROPERTIES ('key1'='value1', 'key2'='value2', ...)];
 
+
 #Load Data:
 /*
 The LOAD DATA command in Hive is used to load data from an external file or HDFS directory into a Hive table. 
@@ -61,6 +62,15 @@ PARTITION (partition_column=value, ...) (optional): If the target table is a par
 */
 LOAD DATA [LOCAL] INPATH 'input_file_or_directory'
 [OVERWRITE] INTO TABLE table_name [PARTITION (partition_column=value, ...)];
+
+
+## Descibe table
+DESCRIBE EXTENDED <table_name>;
+DESCRIBE FORMATTED <table_name>;
+DESCRIBE FUNCTION <function_name>;
+DESCRIBE VIEW <view_name>;
+DESCRIBE INDEX <index_name> ON <table_name>;
+DESCRIBE FORMATTED FUNCTION <function_name>;
 
 
 
